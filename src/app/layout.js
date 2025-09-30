@@ -5,8 +5,8 @@ import Header from "@/components/Header"; // Import the Header
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "LazyBCA - Lecture Recordings",
-  description: "Daily lecture recordings for BCA students.",
+  title: "LazyBCA - Lecture Recordings and Notes",
+  description: "Daily lecture recordings and notes for BCA students.",
 };
 
 export default function RootLayout({ children }) {
