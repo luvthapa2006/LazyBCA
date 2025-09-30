@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Link from 'next/link';
+import BackButton from '@/components/BackButton';
 
 async function getVideosForDate(date) {
   const dateDirectory = path.join(process.cwd(), 'public', 'videos', date);
@@ -20,9 +20,7 @@ export default async function DatePage({ params }) {
 
   return (
     <div>
-      <Link href="/" className="text-cyan-400 hover:text-cyan-300 mb-6 inline-block">
-        &larr; Back to Main Menu
-      </Link>
+        <BackButton />
       <h1 className="text-4xl font-extrabold text-cyan-300 mb-8">
         Lectures for: <span className="text-white">{date}</span>
       </h1>

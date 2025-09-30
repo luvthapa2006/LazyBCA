@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Link from 'next/link';
+import BackButton from '@/components/BackButton';
 
 // This function gets notes for a specific subject
 async function getNotesForSubject(subject) {
@@ -20,9 +20,7 @@ export default async function NotesPage({ params }) {
 
   return (
     <div>
-      <Link href="/" className="text-cyan-400 hover:text-cyan-300 mb-6 inline-block">
-        &larr; Back to Main Menu
-      </Link>
+      <BackButton />
       <h1 className="text-4xl font-extrabold text-indigo-300 mb-8 capitalize">
         Notes for: <span className="text-white">{subject.replace(/-/g, ' ')}</span>
       </h1>
@@ -30,26 +28,32 @@ export default async function NotesPage({ params }) {
       {notes.length > 0 ? (
         <div className="space-y-4">
           {notes.map((note) => (
-            <div key={note} className="flex items-center justify-between bg-gray-700 p-4 rounded-lg">
-              <span className="text-xl text-white">{note}</span>
+            // UPDATED RESPONSIVE CONTAINER
+            <div 
+              key={note} 
+              // On small screens: stack vertically (flex-col) and align left
+              // On medium screens and up (md:): arrange horizontally and center-align
+              className="flex flex-col md:flex-row md:items-center justify-between bg-gray-700 p-4 rounded-lg gap-4"
+            >
+              {/* Added 'break-all' to prevent long filenames from overflowing */}
+              <span className="text-xl text-white break-all">{note}</span>
 
               {/* Container for the buttons */}
-              <div className="flex items-center gap-4">
-                {/* NEW "View Note" button */}
+              {/* Added 'w-full' for mobile and 'w-auto' for larger screens */}
+              <div className="flex items-center gap-4 w-full md:w-auto">
+                {/* Made buttons take full width on mobile for better touch targets */}
                 <a 
                   href={`/notes/${params.subject}/${note}`} 
-                  target="_blank" // Opens the link in a new tab
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors"
+                  className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors w-1/2 md:w-auto text-center"
                 >
                   View Note
                 </a>
-
-                {/* Existing "Download" button */}
                 <a 
                   href={`/notes/${params.subject}/${note}`} 
                   download
-                  className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+                  className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors w-1/2 md:w-auto text-center"
                 >
                   Download
                 </a>
