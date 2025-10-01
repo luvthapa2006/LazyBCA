@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import BackButton from '@/components/BackButton';
+import ShareButton from '@/components/ShareButton';
 
 // This function gets notes for a specific subject
 async function getNotesForSubject(subject) {
@@ -21,9 +22,13 @@ export default async function NotesPage({ params }) {
   return (
     <div>
       <BackButton />
+      
+      <div className="flex items-center justify-between mb-8">
       <h1 className="text-4xl font-extrabold text-indigo-300 mb-8 capitalize">
         Notes for: <span className="text-white">{subject.replace(/-/g, ' ')}</span>
       </h1>
+      <ShareButton />
+      </div>
       
       {notes.length > 0 ? (
         <div className="space-y-4">

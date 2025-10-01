@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import BackButton from '@/components/BackButton';
+import ShareButton from '@/components/ShareButton';
 
 async function getVideosForDate(date) {
   const dateDirectory = path.join(process.cwd(), 'public', 'videos', date);
@@ -21,10 +22,14 @@ export default async function DatePage({ params }) {
   return (
     <div>
         <BackButton />
+        
+      <div className="flex items-center justify-between mb-8">
       <h1 className="text-4xl font-extrabold text-cyan-300 mb-8">
         Lectures for: <span className="text-white">{date}</span>
       </h1>
-      
+      <ShareButton />
+      </div>
+
       {videos.length > 0 ? (
         <div className="space-y-12"> {/* Increased space for the button */}
           {videos.map((video) => (
