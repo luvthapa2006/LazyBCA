@@ -2,26 +2,22 @@
 
 import { useState } from 'react';
 
-export default function ShareButton() {
+// The component will now accept a 'shareUrl' prop
+export default function ShareButton({ shareUrl }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleShare = async () => {
-    // Get the current page's URL
-    const currentUrl = window.location.href;
+    // Construct the full URL to be copied
+    const fullUrl = `${window.location.origin}${shareUrl}`;
 
     try {
-      // Use the modern Navigator API to copy to the clipboard
-      await navigator.clipboard.writeText(currentUrl);
-      
-      // Provide feedback to the user
+      await navigator.clipboard.writeText(fullUrl);
       setIsCopied(true);
-
-      // Reset the button text after 2 seconds
       setTimeout(() => {
         setIsCopied(false);
       }, 2000);
-
-    } catch (err) {
+    } catch (err)
+      {
       console.error('Failed to copy: ', err);
     }
   };
@@ -29,13 +25,13 @@ export default function ShareButton() {
   return (
     <button
       onClick={handleShare}
-      className={`font-bold py-2 px-4 rounded-lg transition-colors text-sm ${
+      className={`font-bold py-2 px-4 rounded-lg transition-colors w-full md:w-auto text-center ${
         isCopied
           ? 'bg-green-500 text-white'
           : 'bg-gray-600 text-white hover:bg-gray-500'
       }`}
     >
-      {isCopied ? 'Link Copied!' : 'Share Link'}
+      {isCopied ? 'Copied!' : 'Share'}
     </button>
   );
 }

@@ -21,17 +21,15 @@ export default async function DatePage({ params }) {
 
   return (
     <div>
-        <BackButton />
-        
-      <div className="flex items-center justify-between mb-8">
+      <BackButton />
+      
+      {/* REMOVED the single ShareButton from the header */}
       <h1 className="text-4xl font-extrabold text-cyan-300 mb-8">
         Lectures for: <span className="text-white">{date}</span>
       </h1>
-      <ShareButton />
-      </div>
-
+      
       {videos.length > 0 ? (
-        <div className="space-y-12"> {/* Increased space for the button */}
+        <div className="space-y-12">
           {videos.map((video) => (
             <div key={video} className="bg-gray-900 p-4 rounded-lg shadow-lg">
               <h2 className="text-xl font-semibold mb-4 capitalize">
@@ -41,13 +39,12 @@ export default async function DatePage({ params }) {
                 <source src={`/videos/${date}/${video}`} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              {/* This is the new Download Button */}
-              <div className="mt-4 text-right">
-                <a 
-                  href={`/videos/${date}/${video}`} 
-                  download 
-                  className="bg-cyan-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-cyan-600 transition-colors inline-block"
-                >
+              
+              {/* Updated button container */}
+              <div className="mt-4 flex justify-end items-center gap-4">
+                {/* Share Button for this specific video */}
+                <ShareButton shareUrl={`/videos/${date}/${video}`} />
+                <a href={`/videos/${date}/${video}`} download className="bg-cyan-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-cyan-600 transition-colors inline-block">
                   Download Lecture
                 </a>
               </div>
