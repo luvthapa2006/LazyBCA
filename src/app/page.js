@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import HomeClient from '@/components/HomeClient';
 
-// This function gets video recording dates (sorted newest first)
 function getRecordingDates() {
   const videosDirectory = path.join(process.cwd(), 'public', 'videos');
   try {
@@ -16,26 +15,44 @@ function getRecordingDates() {
   }
 }
 
-// This new function gets note subjects (sorted alphabetically)
 function getNoteSubjects() {
   const notesDirectory = path.join(process.cwd(), 'public', 'notes');
   try {
     const subjectFolders = fs.readdirSync(notesDirectory, { withFileTypes: true })
       .filter(dirent => dirent.isDirectory())
       .map(dirent => dirent.name);
-    return subjectFolders.sort(); // Sorts subjects A-Z
+    return subjectFolders.sort();
   } catch (error) {
     console.error("Could not read notes directory:", error);
     return [];
   }
 }
 
+// NEW function to get assignment subjects
+function getAssignmentSubjects() {
+  const assignmentsDirectory = path.join(process.cwd(), 'public', 'assignments');
+  try {
+    const subjectFolders = fs.readdirSync(assignmentsDirectory, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+    return subjectFolders.sort();
+  } catch (error) {
+    console.error("Could not read assignments directory:", error);
+    return [];
+  }
+}
+
+
 export default async function HomePage() {
   const recordingDates = getRecordingDates();
-  const noteSubjects = getNoteSubjects(); // Call the new function
+  const noteSubjects = getNoteSubjects();
+  const assignmentSubjects = getAssignmentSubjects(); // Get the new data
 
-  // Pass the new 'noteSubjects' prop
   return (
-    <HomeClient recordingDates={recordingDates} noteSubjects={noteSubjects} />
+    <HomeClient 
+      recordingDates={recordingDates} 
+      noteSubjects={noteSubjects}
+      assignmentSubjects={assignmentSubjects} // Pass it as a prop
+    />
   );
 }

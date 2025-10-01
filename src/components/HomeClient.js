@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function HomeClient({ recordingDates, noteSubjects }) {
+// Accept the new 'assignmentSubjects' prop
+export default function HomeClient({ recordingDates, noteSubjects, assignmentSubjects }) {
   const [view, setView] = useState('choice');
   const handleBack = () => setView('choice');
 
@@ -11,12 +12,17 @@ export default function HomeClient({ recordingDates, noteSubjects }) {
     return (
       <div className="text-center">
         <h1 className="text-4xl font-extrabold text-white mb-10">Welcome to LazyBCA</h1>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8">
-          <button onClick={() => setView('recordings')} className="w-64 bg-cyan-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform transform hover:scale-105">
+        {/* Changed to a grid for better alignment with 3 items */}
+        <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-8 max-w-4xl mx-auto">
+          <button onClick={() => setView('recordings')} className="w-full bg-cyan-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform transform hover:scale-105">
             <span className="text-2xl">View Recordings</span>
           </button>
-          <button onClick={() => setView('notes')} className="w-64 bg-indigo-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-indigo-600 transition-transform transform hover:scale-105">
+          <button onClick={() => setView('notes')} className="w-full bg-indigo-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-indigo-600 transition-transform transform hover:scale-105">
             <span className="text-2xl">View Notes</span>
+          </button>
+          {/* NEW "View Assignments" button */}
+          <button onClick={() => setView('assignments')} className="w-full bg-emerald-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105">
+            <span className="text-2xl">View Assignments</span>
           </button>
         </div>
       </div>
@@ -30,12 +36,11 @@ export default function HomeClient({ recordingDates, noteSubjects }) {
   );
 
   if (view === 'recordings') {
+    // This section is unchanged
     return (
       <div>
         <BackButton />
-        <h1 className="text-4xl font-extrabold text-cyan-300 mb-8 border-b-2 border-cyan-500 pb-2">
-          Available Recordings
-        </h1>
+        <h1 className="text-4xl font-extrabold text-cyan-300 mb-8 border-b-2 border-cyan-500 pb-2">Available Recordings</h1>
         {recordingDates.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recordingDates.map((date) => (
@@ -45,37 +50,47 @@ export default function HomeClient({ recordingDates, noteSubjects }) {
               </Link>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-400">No recordings found.</p>
-        )}
+        ) : (<p className="text-gray-400">No recordings found.</p>)}
       </div>
     );
   }
 
-  // THIS IS THE CORRECTED SECTION
   if (view === 'notes') {
+    // This section is unchanged
     return (
       <div>
         <BackButton />
-        <h1 className="text-4xl font-extrabold text-indigo-300 mb-8 border-b-2 border-indigo-500 pb-2">
-          Available Notes
-        </h1>
+        <h1 className="text-4xl font-extrabold text-indigo-300 mb-8 border-b-2 border-indigo-500 pb-2">Available Notes</h1>
         {noteSubjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* This map correctly uses 'noteSubjects' to create the links */}
             {noteSubjects.map((subject) => (
-              <Link 
-                key={subject} 
-                href={`/notes/${subject}`} 
-                className="block bg-gray-700 rounded-lg p-6 shadow-lg hover:shadow-indigo-500/50 hover:bg-gray-600 transition-all duration-300 transform hover:-translate-y-1">
+              <Link key={subject} href={`/notes/${subject}`} className="block bg-gray-700 rounded-lg p-6 shadow-lg hover:shadow-indigo-500/50 hover:bg-gray-600 transition-all duration-300 transform hover:-translate-y-1">
                 <h2 className="text-2xl font-bold text-white">{subject.replace(/-/g, ' ')}</h2>
                 <p className="text-gray-400 mt-2">View notes for this subject</p>
               </Link>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-400">No notes found.</p>
-        )}
+        ) : (<p className="text-gray-400">No notes found.</p>)}
+      </div>
+    );
+  }
+
+  // NEW section for Assignments
+  if (view === 'assignments') {
+    return (
+      <div>
+        <BackButton />
+        <h1 className="text-4xl font-extrabold text-emerald-300 mb-8 border-b-2 border-emerald-500 pb-2">Available Assignments</h1>
+        {assignmentSubjects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {assignmentSubjects.map((subject) => (
+              <Link key={subject} href={`/assignments/${subject}`} className="block bg-gray-700 rounded-lg p-6 shadow-lg hover:shadow-emerald-500/50 hover:bg-gray-600 transition-all duration-300 transform hover:-translate-y-1">
+                <h2 className="text-2xl font-bold text-white">{subject.replace(/-/g, ' ')}</h2>
+                <p className="text-gray-400 mt-2">View solutions for this subject</p>
+              </Link>
+            ))}
+          </div>
+        ) : (<p className="text-gray-400">No assignments found.</p>)}
       </div>
     );
   }
