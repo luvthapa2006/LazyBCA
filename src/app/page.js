@@ -2,18 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import HomeClient from '@/components/HomeClient';
 
-function getRecordingDates() {
-  const videosDirectory = path.join(process.cwd(), 'public', 'videos');
-  try {
-    const dateFolders = fs.readdirSync(videosDirectory, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
-    return dateFolders.sort((a, b) => new Date(b) - new Date(a));
-  } catch (error) {
-    console.error("Could not read videos directory:", error);
-    return [];
-  }
-}
+// REMOVED the getRecordingDates function
 
 function getNoteSubjects() {
   const notesDirectory = path.join(process.cwd(), 'public', 'notes');
@@ -28,7 +17,6 @@ function getNoteSubjects() {
   }
 }
 
-// NEW function to get assignment subjects
 function getAssignmentSubjects() {
   const assignmentsDirectory = path.join(process.cwd(), 'public', 'assignments');
   try {
@@ -42,17 +30,31 @@ function getAssignmentSubjects() {
   }
 }
 
+// NEW function to get experiment subjects
+function getExperimentSubjects() {
+  const experimentsDirectory = path.join(process.cwd(), 'public', 'experiments');
+  try {
+    const subjectFolders = fs.readdirSync(experimentsDirectory, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+    return subjectFolders.sort();
+  } catch (error) {
+    console.error("Could not read experiments directory:", error);
+    return [];
+  }
+}
 
 export default async function HomePage() {
-  const recordingDates = getRecordingDates();
+  // REMOVED recordingDates
   const noteSubjects = getNoteSubjects();
-  const assignmentSubjects = getAssignmentSubjects(); // Get the new data
+  const assignmentSubjects = getAssignmentSubjects();
+  const experimentSubjects = getExperimentSubjects(); // Get the new data
 
   return (
     <HomeClient 
-      recordingDates={recordingDates} 
       noteSubjects={noteSubjects}
-      assignmentSubjects={assignmentSubjects} // Pass it as a prop
+      assignmentSubjects={assignmentSubjects}
+      experimentSubjects={experimentSubjects} // Pass it as a prop
     />
   );
 }
