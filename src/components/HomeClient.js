@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// Accept the new 'assignmentSubjects' prop
-export default function HomeClient({ recordingDates, noteSubjects, assignmentSubjects }) {
+// THE FIX: Add 'experimentSubjects' to this list of props
+export default function HomeClient({ noteSubjects, assignmentSubjects, experimentSubjects }) {
   const [view, setView] = useState('choice');
   const handleBack = () => setView('choice');
 
@@ -12,15 +12,13 @@ export default function HomeClient({ recordingDates, noteSubjects, assignmentSub
     return (
       <div className="text-center">
         <h1 className="text-4xl font-extrabold text-white mb-10">Welcome to LazyBCA</h1>
-        {/* Changed to a grid for better alignment with 3 items */}
         <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-8 max-w-4xl mx-auto">
-          <button onClick={() => setView('experiments')} className="w-full bg-cyan-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform transform hover:scale-105">
+          <button onClick={() => setView('experiments')} className="w-full bg-amber-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-amber-600 transition-transform transform hover:scale-105">
             <span className="text-2xl">View Experiments</span>
           </button>
           <button onClick={() => setView('notes')} className="w-full bg-indigo-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-indigo-600 transition-transform transform hover:scale-105">
             <span className="text-2xl">View Notes</span>
           </button>
-          {/* NEW "View Assignments" button */}
           <button onClick={() => setView('assignments')} className="w-full bg-emerald-500 text-white font-bold py-6 px-4 rounded-lg shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105">
             <span className="text-2xl">View Assignments</span>
           </button>
@@ -55,7 +53,6 @@ export default function HomeClient({ recordingDates, noteSubjects, assignmentSub
   }
 
   if (view === 'notes') {
-    // This section is unchanged
     return (
       <div>
         <BackButton />
@@ -74,7 +71,6 @@ export default function HomeClient({ recordingDates, noteSubjects, assignmentSub
     );
   }
 
-  // NEW section for Assignments
   if (view === 'assignments') {
     return (
       <div>
